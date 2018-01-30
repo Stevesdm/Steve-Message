@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @SpringBootApplication
@@ -39,6 +40,16 @@ public class RocketmqConsumerApplication implements CommandLineRunner {
 															ConsumeConcurrentlyContext context) {
 				System.out.println(Thread.currentThread().getName() + " Receive New Messages: " + msgs);
 				System.out.println(" Receive Message Size: " + msgs.size());
+				for (MessageExt messageExt : msgs){
+					try {
+						System.out.println(new String(messageExt.getBody(),"utf-8"));
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+						return ConsumeConcurrentlyStatus.RECONSUME_LATER;
+					}
+				}
+
+
 				return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
 			}
 		});
