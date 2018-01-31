@@ -27,6 +27,7 @@ public class RocketmqProducerApplication implements CommandLineRunner {
 						("Hello RocketMQ " + i).getBytes()// body
 				);
 				SendResult sendResult = producer.send(msg);
+
 				System.out.println(sendResult);
 				Thread.sleep(300);
 			}
